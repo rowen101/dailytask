@@ -25,7 +25,7 @@ Route::middleware('auth')
     ->group(function () {
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
         Route::get('/core/menu', [App\Http\Controllers\Core\MenuController::class, 'index']);
-
+        Route::get('/core/dailytask', [App\Http\Controllers\Core\DailyTaskController::class, 'index']);
         Route::get('/core/role', [App\Http\Controllers\Core\RoleController::class, 'index']);
         Route::get('/core/permission', [App\Http\Controllers\Core\PermissionController::class, 'index']);
         Route::get('/core/dashboard', [App\Http\Controllers\Core\DashboardController::class, 'index']);
@@ -80,6 +80,9 @@ Route::middleware('auth')
         Route::get('/core/helpdesk/help-pagebyid/{id}', [App\Http\Controllers\Core\HelpdeskController::class, 'getPagebyID']);
         Route::put('core/helpdesk/update-page/{id}', [App\http\Controllers\Core\HelpdeskController::class, 'updateSectionPage']);
         Route::delete('/core/helpdesk/delete-page/{id}', [App\Http\Controllers\Core\HelpdeskController::class, 'deleteSectionPage']);
+
+        Route::get('/core/dailytasklist', [App\Http\Controllers\Core\DailyTaskController::class, 'listdailytask']);
+        Route::post('/core/dailytas-store', [App\Http\Controllers\Core\DailyTaskController::class, 'store']);
     });
 
 

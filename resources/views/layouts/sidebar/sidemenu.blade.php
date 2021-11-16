@@ -10,6 +10,13 @@
                     <span>Dashboard</span>
                 </a>
             </li>
+
+            <li>
+                <a href="/core/dailytask">
+                    <span class="ti-settings"></span>
+                    <span>DailyTask</span>
+                </a>
+            </li>
             <li>
                 <a href="/core/application">
                     <i class=""></i>
@@ -30,6 +37,7 @@
                     <span>Permission</span>
                 </a>
             </li> --}}
+
             <li>
                 <a href="/core/role">
                     <span class="ti-arrow-top-right"></span>

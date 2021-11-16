@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -18,6 +18,7 @@ mix.js("resources/js/app.js", "public/js")
     .js("resources/js/page/permission.js", "public/js")
     .js("resources/js/page/role.js", "public/js")
     .js("resources/js/page/user.js", "public/js")
+    .js("resources/js/page/dailytask.js", "public/js")
     .react()
     .sass("resources/sass/app.scss", "public/css")
     .sass("resources/sass/custom-style.scss", "public/css");
