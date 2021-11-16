@@ -8,7 +8,7 @@ Requirements:
 
 ##### 1. Cloning and install Dependencies via composer
 
-git clone https://github.com/rowen101/dailytaskmonitoring.git ProjectName
+git clone https://github.com/rowen101/dailytask.git ProjectName
 
 checkout main branch
 
