@@ -23,6 +23,7 @@ class CreateDailyTasksTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('week', 20);
             $table->string('site', 20);
+            $table->string('district', 20);
             $table->integer('ticket')->default();
             $table->string('type', 20);
             $table->string('subject', 150);
@@ -30,10 +31,11 @@ class CreateDailyTasksTable extends Migration
             $table->string('position', 20);
             $table->string('department', 20);
             $table->integer('days')->default(100);
-            $table->boolean('hitmiss')->default(true);
-            $table->boolean('status')->default(true);
-            $table->boolean('sla')->default(true);
+            $table->boolean('hitmiss')->default(false);
+            $table->boolean('status')->default(false);
+            $table->boolean('sla')->default(false);
             $table->string('remarks', 150);
+            $table->boolean('publish')->default(false);
             $table->timestamps();
         });
     }

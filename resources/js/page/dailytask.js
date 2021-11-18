@@ -87,7 +87,7 @@ function DailyTaskList() {
     };
 
     const onDelete = (item) => {
-        axios.delete("/core/application/delete/" + item).then((response) => {
+        axios.delete("/core/dailytask-delete/" + item).then((response) => {
             setForm({});
             setIsOpenModalDel(false);
             _isrefreshList();
@@ -107,7 +107,7 @@ function DailyTaskList() {
                 });
         } else {
             axios
-                .put("/core/application/update/" + form.id, form)
+                .put("/core/dailytas-update/" + form.id, form)
                 .then(() => {
                     setForm({});
                     setIsOpenModal(false);
@@ -118,7 +118,23 @@ function DailyTaskList() {
                 });
         }
     };
+    //get week of the month
+    function getWeekNumber(d) {
+        // Copy date so don't modify original
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        // Set to nearest Thursday: current date + 4 - current day number
+        // Make Sunday's day number 7
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+        // Get first day of year
+        var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        // Calculate full weeks to nearest Thursday
+        var weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+        // Return array of year and week number
+        return [d.getUTCFullYear(), weekNo];
+    }
 
+    const result = getWeekNumber(new Date());
+    //end get week by month
     const { isLoading, error, data } = useQuery("repsData", _isrefreshList, {
         onSuccess: () => console.log("fetch ok"),
     });
@@ -130,7 +146,7 @@ function DailyTaskList() {
             {/* modal */}
             <Modal isOpen={isOpenModal} toggle={toggleModal}>
                 <ModalHeader toggle={toggleModal}>
-                    {isEdit ? "Edit" : "Add"} Ticket
+                    {isEdit ? "Edit" : "Add"} Ticket In Week's {result[1]}
                 </ModalHeader>
                 <ModalBody>
                     <Row>
@@ -231,7 +247,7 @@ function DailyTaskList() {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={onSave}>
-                        {isEdit ? "Edit" : "Add"} Application
+                        {isEdit ? "Edit" : "Add"} Ticket
                     </Button>
                     <Button color="secondary" onClick={toggleModal}>
                         Cancel
@@ -246,9 +262,7 @@ function DailyTaskList() {
                 toggle={toggleModalDel}
                 className="fades"
             >
-                <ModalHeader toggle={toggleModalDel}>
-                    Delete Application
-                </ModalHeader>
+                <ModalHeader toggle={toggleModalDel}>Delete Ticket</ModalHeader>
                 <ModalBody>
                     <Row>
                         <Label className="ml-3">
@@ -278,7 +292,7 @@ function DailyTaskList() {
                 className="mr-2 mb-2"
                 onClick={AddOpenModal}
             >
-                Add Application
+                Add Ticket
             </Button>
             {/* <td className="pull-right" style="margin-top: -58px;">
                 <div className="row">
@@ -294,21 +308,27 @@ function DailyTaskList() {
                     <Table className="table table-striped table-hover table-sm table-responsive-lg">
                         <thead>
                             <tr>
-                                <th scope="col">App Code</th>
-                                <th scope="col">App Name</th>
-                                <th scope="col">Description</th>
+                                <th scope="col">Week</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Site</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Raised By</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {applicaton.map((row) => {
                                 return (
                                     <tr key={row.id}>
-                                        <th>{row.app_code}</th>
-                                        <th>{row.app_name}</th>
-                                        <th>{row.description}</th>
-                                        <th>{row.status}</th>
+                                        <th>{row.week}</th>
+                                        <th>{row.type}</th>
+                                        <th>{row.site}</th>
+                                        <th>{row.subject}</th>
+                                        <th>{row.raisedby}</th>
+                                        <th>
+                                            {row.status == 1 ? "Close" : "Open"}
+                                        </th>
                                         <th>
                                             <Button
                                                 color="success"
@@ -331,7 +351,17 @@ function DailyTaskList() {
                                                 }}
                                             >
                                                 <i className="ti-trash"></i>
-                                                Remove
+                                                Delete
+                                            </Button>
+                                            |{" "}
+                                            <Button
+                                                color="primary"
+                                                size="sm"
+                                                className="ml"
+                                                onClick={{}}
+                                            >
+                                                <i className="ti-new-window"></i>
+                                                Publish
                                             </Button>
                                         </th>
                                     </tr>

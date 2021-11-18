@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Core;
 use App\Http\Controllers\Controller;
 use App\Models\Core\DailyTask;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DailyTaskController extends Controller
 {
@@ -20,6 +21,7 @@ class DailyTaskController extends Controller
 
     public function listdailytask()
     {
+        $id = Auth::id();
         $db = DailyTask::all();
         return response()->json($db, 200);
     }
@@ -44,22 +46,23 @@ class DailyTaskController extends Controller
     {
         $db = new DailyTask;
         $request->validate([
-            'user_id' => 'required',
-            'week' => 'required',
-            'site' => 'required',
-            'ticket' => 'required',
-            'type' => 'required',
-            'subject' => 'required',
-            'raisedby' => 'required',
+            // 'user_id' => 'required',
+            // 'week' => 'required',
+            // 'site' => 'required',
+            // 'district' => 'required',
+            // 'ticket' => 'required',
+            // 'type' => 'required',
+            // 'subject' => 'required',
+            // 'raisedby' => 'required',
             // 'position' => 'required',
-            'department' => 'required',
-            'days' => 'required',
-            'hitmiss' => 'required',
-            'status' => 'required',
-            'sla' => 'required',
-            'remarks' => 'required'
+            // 'department' => 'required',
+            // 'days' => 'required',
+            // 'hitmiss' => 'required',
+            // 'status' => 'required',
+            // 'sla' => 'required',
+            // 'remarks' => 'required'
         ]);
-        $db->user_id = auth()->user()->id;
+        // $db->user_id = auth()->user()->id;
         $db->store($request->all());
         return response()->json($db, 200);
     }
@@ -95,7 +98,27 @@ class DailyTaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $db =  DailyTask::find($id);
+        $request->validate([
+            'user_id' => 'required',
+            'week' => 'required',
+            'site' => 'required',
+            'district' => 'required',
+            'ticket' => 'required',
+            'type' => 'required',
+            'subject' => 'required',
+            'raisedby' => 'required',
+            'position' => 'required',
+            'department' => 'required',
+            'days' => 'required',
+            'hitmiss' => 'required',
+            'status' => 'required',
+            'sla' => 'required',
+            'remarks' => 'required'
+        ]);
+        $db->user_id = auth()->user()->id;
+        $db->store($request->all());
+        return response()->json($db, 200);
     }
 
     /**
@@ -106,6 +129,8 @@ class DailyTaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $db = DailyTask::find($id);
+        $db->delete();
+        return response()->json($db, 200);
     }
 }
