@@ -85,6 +85,8 @@ Route::middleware('auth')
         Route::post('/core/dailytask-store', [App\Http\Controllers\Core\DailyTaskController::class, 'store']);
         Route::put('/core/dailytask-update/{id}', [App\Http\Controllers\Core\DailyTaskController::class, 'update']);
         Route::delete('/core/dailytask-delete/{id}', [App\Http\Controllers\Core\DailyTaskController::class, 'destroy']);
+
+        Route::get('/core/ticket-type', [App\Http\Controllers\Core\DailyTaskController::class, 'isoptiontype']);
     });
 
 

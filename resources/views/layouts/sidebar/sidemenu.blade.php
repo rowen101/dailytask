@@ -17,20 +17,20 @@
                     <span>DailyTask</span>
                 </a>
             </li>
-            <li>
+            {{-- <li>
                 <a href="/core/application">
                     <i class=""></i>
                     <span class="fas fa-th"></span>
                     <span>Application</span>
                 </a>
 
-            </li>
-            <li>
+            </li> --}}
+            {{-- <li>
                 <a href="/core/menu">
                     <span class="ti-menu"></span>
                     <span>Menu</span>
                 </a>
-            </li>
+            </li> --}}
             {{-- <li>
                 <a href="/core/permission">
                     <span class="ti-settings"></span>
@@ -38,12 +38,12 @@
                 </a>
             </li> --}}
 
-            <li>
+            {{-- <li>
                 <a href="/core/role">
                     <span class="ti-arrow-top-right"></span>
                     <span>Role</span>
                 </a>
-            </li>
+            </li> --}}
             <li>
                 <a href="/core/user">
                     <span class="ti-user"></span>

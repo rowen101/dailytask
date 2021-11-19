@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import BootstrapSwitchButton from "bootstrap-switch-button-react";
 const queryClient = new QueryClient();
 import {
     Label,
@@ -27,18 +27,19 @@ function DailyTaskList() {
     const [isConfirmEditModal, setIsConfirmEditModal] = useState(false);
     const [applicaton, setApplication] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+    const [isoption, setIs0ption] = useState([]);
     const [form, setForm] = useState({
         id: "",
         user_id: "",
         week: "",
         site: "",
-        ticket: 0,
+        ticket: "",
         type: "",
         subject: "",
         reaisedby: "",
         position: "",
         department: "",
-        day: 0,
+        day: "",
         hitmiss: false,
         status: false,
         sla: false,
@@ -60,30 +61,37 @@ function DailyTaskList() {
     function clearform() {
         setForm({
             ...form,
-            app_code: "",
             id: "",
-            app_name: "",
-            description: "",
-            app_icon: "",
-            status: "",
-            status_message: "",
+            user_id: "",
+            week: "",
+            site: "",
+            ticket: "",
+            type: "",
+            subject: "",
+            reaisedby: "",
+            position: "",
+            department: "",
+            day: "",
         });
     }
     const AddOpenModal = () => {
         setIsOpenModal(true);
         setIsEdit(false);
         clearform();
+        _isrefreshListOption();
     };
 
     const onEditModal = (item) => {
         setForm(item);
         setIsOpenModal(true);
         setIsEdit(true);
+        _isrefreshListOption();
     };
 
     const onOpenDelModal = (item) => {
         setForm(item);
         setIsOpenModalDel(true);
+        _isrefreshListOption();
     };
 
     const onDelete = (item) => {
@@ -96,7 +104,7 @@ function DailyTaskList() {
     const onSave = () => {
         if (isEdit == false) {
             axios
-                .post("/core/dailytas-store", form)
+                .post("/core/dailytask-store", form)
                 .then(() => {
                     setForm({});
                     setIsOpenModal(false);
@@ -107,7 +115,7 @@ function DailyTaskList() {
                 });
         } else {
             axios
-                .put("/core/dailytas-update/" + form.id, form)
+                .put("/core/dailytask-update/" + form.id, form)
                 .then(() => {
                     setForm({});
                     setIsOpenModal(false);
@@ -117,6 +125,18 @@ function DailyTaskList() {
                     console.log(err.data);
                 });
         }
+    };
+
+    const _isrefreshListOption = () => {
+        axios
+            .get("/core/ticket-type")
+            .then((response) => {
+                setIs0ption(response.data);
+                // onfilter(1);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
     //get week of the month
     function getWeekNumber(d) {
@@ -165,6 +185,30 @@ function DailyTaskList() {
                                         }}
                                     />
                                 </FormGroup>
+                                <FormGroup className="col-md-6">
+                                    <Label for="parent_id">Type</Label>
+                                    <select
+                                        className="form-control"
+                                        aria-label="Default select example"
+                                        onChange={(e) => {
+                                            setForm({
+                                                ...form,
+                                                type: e.target.value,
+                                            });
+                                        }}
+                                    >
+                                        {/* <option value={0}></option> */}
+                                        <option value={0}>Type</option>
+                                        {isoption.map((row) => (
+                                            <option value={row.id} key={row.id}>
+                                                {row.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {form.type}
+                                </FormGroup>
+                            </Row>
+                            <Row>
                                 <FormGroup className="col-md-6 ">
                                     <Label for="Ticket">Ticket*</Label>
                                     <Input
@@ -178,57 +222,20 @@ function DailyTaskList() {
                                         }}
                                     />
                                 </FormGroup>
+                                <FormGroup className="col-md-6">
+                                    <Label for="subject">Subject</Label>
+                                    <Input
+                                        id="subject"
+                                        value={form.subject}
+                                        onChange={(e) => {
+                                            setForm({
+                                                ...form,
+                                                subject: e.target.value,
+                                            });
+                                        }}
+                                    />
+                                </FormGroup>
                             </Row>
-                            <FormGroup>
-                                <Label for="type">Type</Label>
-                                <Input
-                                    type="select"
-                                    name="select"
-                                    id="type"
-                                    value={form.type}
-                                    onChange={(e) => {
-                                        setForm({
-                                            ...form,
-                                            type: e.target.value,
-                                        });
-                                    }}
-                                >
-                                    <option value="active">Active</option>
-                                    <option value="inactive">inactive</option>
-                                </Input>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for="subject">Subject</Label>
-                                <Input
-                                    id="subject"
-                                    value={form.subject}
-                                    onChange={(e) => {
-                                        setForm({
-                                            ...form,
-                                            subject: e.target.value,
-                                        });
-                                    }}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for="Status">tatus</Label>
-                                <Input
-                                    type="select"
-                                    name="select"
-                                    id="status"
-                                    value={form.status}
-                                    onChange={(e) => {
-                                        setForm({
-                                            ...form,
-                                            status: e.target.value,
-                                        });
-                                    }}
-                                >
-                                    <option value="active">Active</option>
-                                    <option value="inactive">inactive</option>
-                                </Input>
-                            </FormGroup>
-
                             <FormGroup>
                                 <Label for="Raised by">Raised by</Label>
                                 <Input
@@ -242,6 +249,47 @@ function DailyTaskList() {
                                     }}
                                 />
                             </FormGroup>
+                            <Row>
+                                <FormGroup className="col-md-3">
+                                    <BootstrapSwitchButton
+                                        checked={true}
+                                        size="xs"
+                                    />
+                                </FormGroup>
+                                <FormGroup className="col-md-3">
+                                    <BootstrapSwitchButton
+                                        checked={true}
+                                        onstyle="outline-dark"
+                                        offstyle="outline-light"
+                                        style="border"
+                                    />
+                                </FormGroup>
+                                <FormGroup className="col-md-3">
+                                    <BootstrapSwitchButton
+                                        checked={true}
+                                        onstyle="outline-dark"
+                                        offstyle="outline-light"
+                                        style="border"
+                                    />
+                                    {/* <Input
+                                        type="select"
+                                        name="select"
+                                        id="status"
+                                        value={form.status}
+                                        onChange={(e) => {
+                                            setForm({
+                                                ...form,
+                                                status: e.target.value,
+                                            });
+                                        }}
+                                    >
+                                        <option value="active">Active</option>
+                                        <option value="inactive">
+                                            inactive
+                                        </option>
+                                    </Input> */}
+                                </FormGroup>
+                            </Row>
                         </Col>
                     </Row>
                 </ModalBody>
@@ -305,7 +353,7 @@ function DailyTaskList() {
 
             <Row>
                 <div className="col-md-12">
-                    <Table className="table table-striped table-hover table-sm table-responsive-lg">
+                    <Table className="table  table-striped table-hover table-sm table-responsive-lg">
                         <thead>
                             <tr>
                                 <th scope="col">Week</th>

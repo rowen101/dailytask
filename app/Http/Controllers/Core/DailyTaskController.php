@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Core;
 
 use App\Http\Controllers\Controller;
 use App\Models\Core\DailyTask;
+use App\Models\Core\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,6 +25,11 @@ class DailyTaskController extends Controller
         $id = Auth::id();
         $db = DailyTask::all();
         return response()->json($db, 200);
+    }
+    public function isoptiontype()
+    {
+        $dboption = Options::where('soptiontype', 'ticket')->get(['id', 'name']);
+        return response()->json($dboption, 200);
     }
 
     /**

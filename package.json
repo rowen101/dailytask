@@ -28,6 +28,7 @@
         "@ckeditor/ckeditor5-build-classic": "^27.0.0",
         "@ckeditor/ckeditor5-ckfinder": "^27.1.0",
         "@ckeditor/ckeditor5-react": "^3.0.2",
+        "bootstrap-switch-button-react": "^1.2.0",
         "faker": "^5.5.0",
         "prop-types": "^15.7.2",
         "react-bootstrap": "^1.5.2",
