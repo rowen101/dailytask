@@ -7,6 +7,7 @@ use App\Models\Core\DailyTask;
 use App\Models\Core\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DailyTaskController extends Controller
 {
@@ -23,8 +24,13 @@ class DailyTaskController extends Controller
     public function listdailytask()
     {
         $id = Auth::id();
-        $db = DailyTask::all();
-        return response()->json($db, 200);
+        // $db = DailyTask::all()->where('user_id', $id);
+        $data = DB::table("daily_tasks")
+            ->join("options", "options.id", "=", "daily_tasks.type")
+            ->select("daily_tasks.*", "options.name")
+            ->where("daily_tasks.user_id", $id)
+            ->get();
+        return response()->json($data, 200);
     }
     public function isoptiontype()
     {
@@ -50,6 +56,7 @@ class DailyTaskController extends Controller
      */
     public function store(Request $request)
     {
+        $id = Auth::id();
         $db = new DailyTask;
         $request->validate([
             // 'user_id' => 'required',
@@ -68,7 +75,8 @@ class DailyTaskController extends Controller
             // 'sla' => 'required',
             // 'remarks' => 'required'
         ]);
-        // $db->user_id = auth()->user()->id;
+        //$db->user_id = auth()->user()->id;
+        $db->user_id = $id;
         $db->store($request->all());
         return response()->json($db, 200);
     }
@@ -79,6 +87,15 @@ class DailyTaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function ispublish(Request $request, $id)
+    {
+        $db =  DailyTask::find($id);
+
+        //$db->user_id = auth()->user()->id;
+
+        $db->store($request->all());
+        return response()->json($db, 200);
+    }
     public function show($id)
     {
         //
@@ -106,7 +123,7 @@ class DailyTaskController extends Controller
     {
         $db =  DailyTask::find($id);
         $request->validate([
-            'user_id' => 'required',
+
             'week' => 'required',
             'site' => 'required',
             'district' => 'required',
@@ -120,7 +137,7 @@ class DailyTaskController extends Controller
             'hitmiss' => 'required',
             'status' => 'required',
             'sla' => 'required',
-            'remarks' => 'required'
+
         ]);
         $db->user_id = auth()->user()->id;
         $db->store($request->all());

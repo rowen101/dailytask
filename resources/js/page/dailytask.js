@@ -17,20 +17,27 @@ import {
     Row,
     Container,
     Col,
+    Alert,
+    Badge,
 } from "reactstrap";
 
 function DailyTaskList() {
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isOpenModalDel, setIsOpenModalDel] = useState(false);
+    const [isOpenModalPub, setIsOpenModalPub] = useState(false);
     const toggleModal = () => setIsOpenModal(!isOpenModal);
     const toggleModalDel = () => setIsOpenModalDel(!isOpenModalDel);
+    const toggleModalPub = () => setIsOpenModalPub(!isOpenModalPub);
     const [isConfirmEditModal, setIsConfirmEditModal] = useState(false);
     const [applicaton, setApplication] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [isoption, setIs0ption] = useState([]);
+    const [checkedstatus, setcheckedstatus] = useState(false);
+    const [checkedhitmiss, setcheckedhitmiss] = useState(false);
+    const [checkedsla, setcheckedsla] = useState(false);
     const [form, setForm] = useState({
         id: "",
-        user_id: "",
+        //user_id: 1,
         week: "",
         site: "",
         ticket: "",
@@ -44,6 +51,7 @@ function DailyTaskList() {
         status: false,
         sla: false,
         remark: "",
+        publish: false,
         created_by: "",
         update_by: "",
     });
@@ -62,8 +70,8 @@ function DailyTaskList() {
         setForm({
             ...form,
             id: "",
-            user_id: "",
-            week: "",
+            week: result[1],
+            district: "",
             site: "",
             ticket: "",
             type: "",
@@ -78,6 +86,7 @@ function DailyTaskList() {
         setIsOpenModal(true);
         setIsEdit(false);
         clearform();
+
         _isrefreshListOption();
     };
 
@@ -85,6 +94,21 @@ function DailyTaskList() {
         setForm(item);
         setIsOpenModal(true);
         setIsEdit(true);
+        if (item.checkedstatus == 0) {
+            setcheckedstatus(false);
+        } else {
+            setcheckedstatus(true);
+        }
+        if (item.hitmiss == 0) {
+            setcheckedhitmiss(false);
+        } else {
+            setcheckedhitmiss(true);
+        }
+        if (item.sla == 0) {
+            setcheckedsla(false);
+        } else {
+            setcheckedsla(true);
+        }
         _isrefreshListOption();
     };
 
@@ -126,7 +150,51 @@ function DailyTaskList() {
                 });
         }
     };
+    //begin checkbox
+    const togglestatus = () => {
+        setcheckedstatus(!checkedstatus);
+        setForm({
+            ...form,
+            status: checkedstatus ? 0 : 1,
+        });
+    };
+    const togglehitmiss = () => {
+        setcheckedhitmiss(!checkedhitmiss);
+        setForm({
+            ...form,
+            hitmiss: checkedhitmiss ? 0 : 1,
+        });
+    };
+    const togglesla = () => {
+        setcheckedsla(!checkedsla);
+        setForm({
+            ...form,
+            sla: checkedsla ? 0 : 1,
+        });
+    };
+    //end checkbox
 
+    //publish button
+
+    const onOpenPubModal = (item) => {
+        setForm(item);
+        setIsOpenModalPub(true);
+        _isrefreshListOption();
+    };
+    const onPublish = (item) => {
+        form.publish = true;
+        axios
+            .put("/core/ticket-publish/" + item, form)
+            .then((response) => {
+                setForm({});
+                setIsOpenModalPub(false);
+                _isrefreshList();
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
     const _isrefreshListOption = () => {
         axios
             .get("/core/ticket-type")
@@ -152,9 +220,9 @@ function DailyTaskList() {
         // Return array of year and week number
         return [d.getUTCFullYear(), weekNo];
     }
-
     const result = getWeekNumber(new Date());
     //end get week by month
+
     const { isLoading, error, data } = useQuery("repsData", _isrefreshList, {
         onSuccess: () => console.log("fetch ok"),
     });
@@ -173,6 +241,19 @@ function DailyTaskList() {
                         <Col>
                             <Row>
                                 <FormGroup className="col-md-6 ">
+                                    <Label for="Site">District*</Label>
+                                    <Input
+                                        id="site"
+                                        value={form.district}
+                                        onChange={(e) => {
+                                            setForm({
+                                                ...form,
+                                                district: e.target.value,
+                                            });
+                                        }}
+                                    />
+                                </FormGroup>
+                                <FormGroup className="col-md-6 ">
                                     <Label for="Site">Site*</Label>
                                     <Input
                                         id="site"
@@ -185,6 +266,8 @@ function DailyTaskList() {
                                         }}
                                     />
                                 </FormGroup>
+                            </Row>
+                            <Row>
                                 <FormGroup className="col-md-6">
                                     <Label for="parent_id">Type</Label>
                                     <select
@@ -207,8 +290,6 @@ function DailyTaskList() {
                                     </select>
                                     {form.type}
                                 </FormGroup>
-                            </Row>
-                            <Row>
                                 <FormGroup className="col-md-6 ">
                                     <Label for="Ticket">Ticket*</Label>
                                     <Input
@@ -222,6 +303,8 @@ function DailyTaskList() {
                                         }}
                                     />
                                 </FormGroup>
+                            </Row>
+                            <Row>
                                 <FormGroup className="col-md-6">
                                     <Label for="subject">Subject</Label>
                                     <Input
@@ -235,59 +318,99 @@ function DailyTaskList() {
                                         }}
                                     />
                                 </FormGroup>
-                            </Row>
-                            <FormGroup>
-                                <Label for="Raised by">Raised by</Label>
-                                <Input
-                                    id="raisedby"
-                                    value={form.raisedby}
-                                    onChange={(e) => {
-                                        setForm({
-                                            ...form,
-                                            raisedby: e.target.value,
-                                        });
-                                    }}
-                                />
-                            </FormGroup>
-                            <Row>
-                                <FormGroup className="col-md-3">
-                                    <BootstrapSwitchButton
-                                        checked={true}
-                                        size="xs"
-                                    />
-                                </FormGroup>
-                                <FormGroup className="col-md-3">
-                                    <BootstrapSwitchButton
-                                        checked={true}
-                                        onstyle="outline-dark"
-                                        offstyle="outline-light"
-                                        style="border"
-                                    />
-                                </FormGroup>
-                                <FormGroup className="col-md-3">
-                                    <BootstrapSwitchButton
-                                        checked={true}
-                                        onstyle="outline-dark"
-                                        offstyle="outline-light"
-                                        style="border"
-                                    />
-                                    {/* <Input
-                                        type="select"
-                                        name="select"
-                                        id="status"
-                                        value={form.status}
+                                <FormGroup className="col-md-6">
+                                    <Label for="Raised by">Raised by</Label>
+                                    <Input
+                                        id="raisedby"
+                                        value={form.raisedby}
                                         onChange={(e) => {
                                             setForm({
                                                 ...form,
-                                                status: e.target.value,
+                                                raisedby: e.target.value,
                                             });
                                         }}
-                                    >
-                                        <option value="active">Active</option>
-                                        <option value="inactive">
-                                            inactive
-                                        </option>
-                                    </Input> */}
+                                    />
+                                </FormGroup>
+                            </Row>
+                            <Row>
+                                <FormGroup className="col-md-6">
+                                    <Label for="Raised by">Position</Label>
+                                    <Input
+                                        id="position"
+                                        value={form.position}
+                                        onChange={(e) => {
+                                            setForm({
+                                                ...form,
+                                                position: e.target.value,
+                                            });
+                                        }}
+                                    />
+                                </FormGroup>
+                                <FormGroup className="col-md-6">
+                                    <Label for="Raised by">Department</Label>
+                                    <Input
+                                        id="department"
+                                        value={form.department}
+                                        onChange={(e) => {
+                                            setForm({
+                                                ...form,
+                                                department: e.target.value,
+                                            });
+                                        }}
+                                    />
+                                </FormGroup>
+                            </Row>
+                            <FormGroup>
+                                <Label for="Raised by">Remarks</Label>
+
+                                <Input
+                                    id="remark"
+                                    value={form.remark}
+                                    onChange={(e) => {
+                                        setForm({
+                                            ...form,
+                                            remark: e.target.value,
+                                        });
+                                    }}
+                                    type="textarea"
+                                />
+                            </FormGroup>
+                            <Row>
+                                <FormGroup check className="ml-3">
+                                    <Label check>
+                                        <Input
+                                            onChange={togglestatus}
+                                            id="status"
+                                            type="checkbox"
+                                            value={checkedstatus ? 1 : 0}
+                                            checked={checkedstatus}
+                                        />{" "}
+                                        Status
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check className="ml-3">
+                                    <Label check>
+                                        <Input
+                                            onChange={togglehitmiss}
+                                            id="hitmiss"
+                                            type="checkbox"
+                                            value={checkedhitmiss ? 1 : 0}
+                                            checked={checkedhitmiss}
+                                        />{" "}
+                                        Hit/Miss
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check className="ml-3">
+                                    <Label check>
+                                        <Input
+                                            onChange={togglesla}
+                                            id="sla"
+                                            type="checkbox"
+                                            value={checkedsla ? 1 : 0}
+                                            checked={checkedsla}
+                                        />{" "}
+                                        SLA
+                                    </Label>
                                 </FormGroup>
                             </Row>
                         </Col>
@@ -304,6 +427,37 @@ function DailyTaskList() {
             </Modal>
             {/* end modal */}
 
+            {/* delete modal */}
+            <Modal
+                isOpen={isOpenModalPub}
+                toggle={toggleModalPub}
+                className="fades"
+            >
+                <ModalHeader toggle={toggleModalPub}>
+                    Publish Ticket
+                </ModalHeader>
+                <ModalBody>
+                    <Row>
+                        <Label className="ml-3">
+                            Are you sure you wish to Publish this item?{" "}
+                        </Label>
+                    </Row>
+                </ModalBody>
+                <ModalFooter>
+                    <Button
+                        color="primary"
+                        onClick={() => {
+                            onPublish(form.id);
+                        }}
+                    >
+                        Publish
+                    </Button>
+                    <Button color="secondary" onClick={toggleModalPub}>
+                        Cancel
+                    </Button>
+                </ModalFooter>
+            </Modal>
+            {/* end publish modal */}
             {/* delete modal */}
             <Modal
                 isOpen={isOpenModalDel}
@@ -342,14 +496,6 @@ function DailyTaskList() {
             >
                 Add Ticket
             </Button>
-            {/* <td className="pull-right" style="margin-top: -58px;">
-                <div className="row">
-                    <div className="col"></div>&nbsp;
-                    <div className="col-md-2">
-                        <i className="fa fa-lg fa-filter clickable"></i>
-                    </div>
-                </div>
-            </td> */}
 
             <Row>
                 <div className="col-md-12">
@@ -362,6 +508,8 @@ function DailyTaskList() {
                                 <th scope="col">Subject</th>
                                 <th scope="col">Raised By</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Hit/Miss</th>
+                                <th scope="col">SLA</th>
                                 <th scope="col">action</th>
                             </tr>
                         </thead>
@@ -369,48 +517,88 @@ function DailyTaskList() {
                             {applicaton.map((row) => {
                                 return (
                                     <tr key={row.id}>
-                                        <th>{row.week}</th>
-                                        <th>{row.type}</th>
+                                        <th>W{row.week}</th>
+                                        <th>{row.name}</th>
                                         <th>{row.site}</th>
                                         <th>{row.subject}</th>
                                         <th>{row.raisedby}</th>
                                         <th>
-                                            {row.status == 1 ? "Close" : "Open"}
+                                            {row.status == 1 ? (
+                                                <Badge color="success" pill>
+                                                    Close
+                                                </Badge>
+                                            ) : (
+                                                <Badge color="danger" pill>
+                                                    Miss
+                                                </Badge>
+                                            )}
                                         </th>
                                         <th>
-                                            <Button
-                                                color="success"
-                                                size="sm"
-                                                className="mr-1"
-                                                onClick={() => {
-                                                    onEditModal(row);
-                                                }}
-                                            >
-                                                <i className="ti-pencil"></i>{" "}
-                                                Edit
-                                            </Button>
-                                            |{" "}
-                                            <Button
-                                                color="danger"
-                                                size="sm"
-                                                className="ml"
-                                                onClick={() => {
-                                                    onOpenDelModal(row);
-                                                }}
-                                            >
-                                                <i className="ti-trash"></i>
-                                                Delete
-                                            </Button>
-                                            |{" "}
-                                            <Button
-                                                color="primary"
-                                                size="sm"
-                                                className="ml"
-                                                onClick={{}}
-                                            >
-                                                <i className="ti-new-window"></i>
-                                                Publish
-                                            </Button>
+                                            {row.hitmiss == 1 ? (
+                                                <Badge color="success" pill>
+                                                    Hit
+                                                </Badge>
+                                            ) : (
+                                                <Badge color="danger" pill>
+                                                    Miss
+                                                </Badge>
+                                            )}
+                                        </th>
+                                        <th>
+                                            {row.sla == 1 ? (
+                                                <Badge color="success" pill>
+                                                    Hit
+                                                </Badge>
+                                            ) : (
+                                                <Badge color="danger" pill>
+                                                    Miss
+                                                </Badge>
+                                            )}
+                                        </th>
+                                        <th>
+                                            {row.publish == 1 ? (
+                                                <Badge color="success" pill>
+                                                    Publish
+                                                </Badge>
+                                            ) : (
+                                                <>
+                                                    <Button
+                                                        color="secondary"
+                                                        size="sm"
+                                                        className="mr-1"
+                                                        onClick={() => {
+                                                            onEditModal(row);
+                                                        }}
+                                                    >
+                                                        <i className="ti-pencil"></i>{" "}
+                                                        Edit
+                                                    </Button>
+                                                    |{" "}
+                                                    <Button
+                                                        color="danger"
+                                                        size="sm"
+                                                        className="ml"
+                                                        onClick={() => {
+                                                            onOpenDelModal(row);
+                                                        }}
+                                                    >
+                                                        <i className="ti-trash"></i>
+                                                        Delete
+                                                    </Button>
+                                                    |{" "}
+                                                    <Button
+                                                        color="primary"
+                                                        size="sm"
+                                                        className="ml"
+                                                        onClick={() => {
+                                                            onOpenPubModal(row);
+                                                        }}
+                                                    >
+                                                        <i className="ti-new-window"></i>
+                                                        Publish
+                                                    </Button>
+                                                </>
+                                            )}
                                         </th>
                                     </tr>
                                 );
