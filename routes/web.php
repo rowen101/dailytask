@@ -81,7 +81,7 @@ Route::middleware('auth')
         Route::put('core/helpdesk/update-page/{id}', [App\http\Controllers\Core\HelpdeskController::class, 'updateSectionPage']);
         Route::delete('/core/helpdesk/delete-page/{id}', [App\Http\Controllers\Core\HelpdeskController::class, 'deleteSectionPage']);
 
-        Route::get('/core/dailytasklist', [App\Http\Controllers\Core\DailyTaskController::class, 'listdailytask']);
+
         Route::post('/core/dailytask-store', [App\Http\Controllers\Core\DailyTaskController::class, 'store']);
         Route::put('/core/dailytask-update/{id}', [App\Http\Controllers\Core\DailyTaskController::class, 'update']);
         Route::delete('/core/dailytask-delete/{id}', [App\Http\Controllers\Core\DailyTaskController::class, 'destroy']);
