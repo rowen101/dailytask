@@ -28,13 +28,13 @@ class CreateDailyTasksTable extends Migration
             $table->string('type', 20);
             $table->string('subject', 150);
             $table->string('raisedby', 20);
-            $table->string('position', 20);
-            $table->string('department', 20);
+            $table->string('position', 20)->nullable();
+            $table->string('department', 20)->nullable();
             $table->integer('days')->default(100);
             $table->boolean('hitmiss')->default(false);
             $table->boolean('status')->default(false);
             $table->boolean('sla')->default(false);
-            $table->string('remarks', 150);
+            $table->string('remarks', 150)->nullable();
             $table->boolean('publish')->default(false);
             $table->timestamps();
         });

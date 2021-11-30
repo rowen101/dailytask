@@ -91,7 +91,7 @@ class DailyTaskController extends Controller
     {
         $db =  DailyTask::find($id);
 
-        //$db->user_id = auth()->user()->id;
+        $db->publish = 1;
 
         $db->store($request->all());
         return response()->json($db, 200);
@@ -127,16 +127,10 @@ class DailyTaskController extends Controller
             'week' => 'required',
             'site' => 'required',
             'district' => 'required',
-            'ticket' => 'required',
-            'type' => 'required',
             'subject' => 'required',
             'raisedby' => 'required',
-            'position' => 'required',
-            'department' => 'required',
             'days' => 'required',
-            'hitmiss' => 'required',
-            'status' => 'required',
-            'sla' => 'required',
+
 
         ]);
         $db->user_id = auth()->user()->id;

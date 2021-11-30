@@ -28,7 +28,6 @@ function DailyTaskList() {
     const toggleModal = () => setIsOpenModal(!isOpenModal);
     const toggleModalDel = () => setIsOpenModalDel(!isOpenModalDel);
     const toggleModalPub = () => setIsOpenModalPub(!isOpenModalPub);
-    const [isConfirmEditModal, setIsConfirmEditModal] = useState(false);
     const [applicaton, setApplication] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [isoption, setIs0ption] = useState([]);
@@ -37,7 +36,7 @@ function DailyTaskList() {
     const [checkedsla, setcheckedsla] = useState(false);
     const [form, setForm] = useState({
         id: "",
-        //user_id: 1,
+        user_id: 1,
         week: "",
         site: "",
         ticket: "",
@@ -80,21 +79,13 @@ function DailyTaskList() {
             position: "",
             department: "",
             day: "",
+            status: 0 ? setcheckedstatus(false) : "",
+            hitmiss: 0 ? setcheckedhitmiss(false) : "",
+            sla: 0 ? setcheckedsla(false) : "",
         });
     }
-    const AddOpenModal = () => {
-        setIsOpenModal(true);
-        setIsEdit(false);
-        clearform();
-
-        _isrefreshListOption();
-    };
-
-    const onEditModal = (item) => {
-        setForm(item);
-        setIsOpenModal(true);
-        setIsEdit(true);
-        if (item.checkedstatus == 0) {
+    function IsCheckbox(item) {
+        if (item.status == 0) {
             setcheckedstatus(false);
         } else {
             setcheckedstatus(true);
@@ -109,12 +100,28 @@ function DailyTaskList() {
         } else {
             setcheckedsla(true);
         }
+    }
+
+    const AddOpenModal = () => {
+        setIsOpenModal(true);
+        setIsEdit(false);
+        clearform();
+
+        _isrefreshListOption();
+    };
+
+    const onEditModal = (item) => {
+        setForm(item);
+        setIsOpenModal(true);
+        setIsEdit(true);
+        IsCheckbox(item);
         _isrefreshListOption();
     };
 
     const onOpenDelModal = (item) => {
         setForm(item);
         setIsOpenModalDel(true);
+        setIsOpenModal(false);
         _isrefreshListOption();
     };
 
@@ -124,6 +131,10 @@ function DailyTaskList() {
             setIsOpenModalDel(false);
             _isrefreshList();
         });
+    };
+    const ondeltoggle = () => {
+        setIsOpenModalDel(false);
+        //setIsOpenModal(true);
     };
     const onSave = () => {
         if (isEdit == false) {
@@ -288,7 +299,6 @@ function DailyTaskList() {
                                             </option>
                                         ))}
                                     </select>
-                                    {form.type}
                                 </FormGroup>
                                 <FormGroup className="col-md-6 ">
                                     <Label for="Ticket">Ticket*</Label>
@@ -417,9 +427,25 @@ function DailyTaskList() {
                     </Row>
                 </ModalBody>
                 <ModalFooter>
+                    {isEdit == true ? (
+                        <>
+                            <Button
+                                color="danger"
+                                onClick={() => {
+                                    onOpenDelModal(form);
+                                }}
+                            >
+                                <i className="ti-trash"></i>
+                            </Button>
+                        </>
+                    ) : (
+                        <></>
+                    )}
+
                     <Button color="primary" onClick={onSave}>
                         {isEdit ? "Edit" : "Add"} Ticket
                     </Button>
+
                     <Button color="secondary" onClick={toggleModal}>
                         Cancel
                     </Button>
@@ -468,8 +494,7 @@ function DailyTaskList() {
                 <ModalBody>
                     <Row>
                         <Label className="ml-3">
-                            Are you sure you wish to delete this item?{" "}
-                            {form.app_name}
+                            Are you sure you wish to delete this item? {form.id}
                         </Label>
                     </Row>
                 </ModalBody>
@@ -482,7 +507,7 @@ function DailyTaskList() {
                     >
                         Delete
                     </Button>
-                    <Button color="secondary" onClick={toggleModalDel}>
+                    <Button color="secondary" onClick={ondeltoggle}>
                         Cancel
                     </Button>
                 </ModalFooter>
@@ -574,7 +599,7 @@ function DailyTaskList() {
                                                         Edit
                                                     </Button>
                                                     |{" "}
-                                                    <Button
+                                                    {/* <Button
                                                         color="danger"
                                                         size="sm"
                                                         className="ml"
@@ -584,8 +609,7 @@ function DailyTaskList() {
                                                     >
                                                         <i className="ti-trash"></i>
                                                         Delete
-                                                    </Button>
-                                                    |{" "}
+                                                    </Button> */}
                                                     <Button
                                                         color="primary"
                                                         size="sm"
