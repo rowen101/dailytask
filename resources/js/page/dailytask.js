@@ -42,7 +42,7 @@ function DailyTaskList() {
         ticket: "",
         type: "",
         subject: "",
-        reaisedby: "",
+        raisedby: "",
         position: "",
         department: "",
         day: "",
@@ -75,16 +75,27 @@ function DailyTaskList() {
             ticket: "",
             type: "",
             subject: "",
-            reaisedby: "",
+            raisedby: "",
             position: "",
             department: "",
             day: "",
-            status: 0 ? setcheckedstatus(false) : "",
-            hitmiss: 0 ? setcheckedhitmiss(false) : "",
-            sla: 0 ? setcheckedsla(false) : "",
+            status: false,
+            hitmiss: false,
+            sla: false,
         });
     }
-    function IsCheckbox(item) {
+
+    const AddOpenModal = () => {
+        setIsOpenModal(true);
+        setIsEdit(false);
+        clearform();
+        _isrefreshListOption();
+    };
+
+    const onEditModal = (item) => {
+        setForm(item);
+        setIsOpenModal(true);
+        setIsEdit(true);
         if (item.status == 0) {
             setcheckedstatus(false);
         } else {
@@ -100,21 +111,6 @@ function DailyTaskList() {
         } else {
             setcheckedsla(true);
         }
-    }
-
-    const AddOpenModal = () => {
-        setIsOpenModal(true);
-        setIsEdit(false);
-        clearform();
-
-        _isrefreshListOption();
-    };
-
-    const onEditModal = (item) => {
-        setForm(item);
-        setIsOpenModal(true);
-        setIsEdit(true);
-        IsCheckbox(item);
         _isrefreshListOption();
     };
 

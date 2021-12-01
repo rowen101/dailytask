@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\System\DatabaseManager;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Pagination\Paginator;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -40,5 +42,6 @@ class AppServiceProvider extends ServiceProvider
         //Run Database Manager
         Schema::defaultStringLength(191);
         DatabaseManager::setupDatabase();
+        Paginator::useBootstrap();
     }
 }

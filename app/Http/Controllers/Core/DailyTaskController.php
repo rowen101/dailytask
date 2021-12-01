@@ -29,7 +29,7 @@ class DailyTaskController extends Controller
             ->join("options", "options.id", "=", "daily_tasks.type")
             ->select("daily_tasks.*", "options.name")
             ->where("daily_tasks.user_id", $id)
-            ->get();
+            ->orderBy("id", 'DESC')->get();
         return response()->json($data, 200);
     }
     public function isoptiontype()

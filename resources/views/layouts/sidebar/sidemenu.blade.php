@@ -17,6 +17,12 @@
                     <span>DailyTask</span>
                 </a>
             </li>
+            <li>
+                <a href="#">
+                    <span class="ti-printer"></span>
+                    <span>Report</span>
+                </a>
+            </li>
             {{-- <li>
                 <a href="/core/application">
                     <i class=""></i>
