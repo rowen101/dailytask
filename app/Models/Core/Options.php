@@ -10,6 +10,6 @@ class Options extends MainModel
 {
     //use HasFactory;
 
-    protected $table = "options";
+    protected $table = "core_options";
     protected $fillable = ['soptiontype', 'name', 'status'];
 }

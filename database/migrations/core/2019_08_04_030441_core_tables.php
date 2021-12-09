@@ -230,16 +230,18 @@ class CoreTables extends Migration
             $table->engine = 'InnoDB';
         });
 
-        // Schema::create('personal_access_tokens', function (Blueprint $table) {
-        //     $table->bigIncrements('id');
-        //     $table->morphs('tokenable');
-        //     $table->string('name');
-        //     $table->string('token', 64)->unique();
-        //     $table->text('abilities')->nullable();
-        //     $table->timestamp('last_used_at')->nullable();
-        //     $table->timestamps();
-        //     $table->engine = 'InnoDB';
-        // });
+        Schema::create('personal_access_tokens', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->morphs('tokenable');
+            $table->string('name');
+            $table->string('token', 64)->unique();
+            $table->text('abilities')->nullable();
+            $table->timestamp('last_used_at')->nullable();
+            $table->timestamps();
+            $table->engine = 'InnoDB';
+        });
+
+
 
         Schema::create('failed_jobs', function (Blueprint $table) {
             $table->id();
@@ -250,6 +252,39 @@ class CoreTables extends Migration
             $table->longText('exception');
             $table->timestamp('failed_at')->useCurrent();
             $table->engine = 'InnoDB';
+        });
+
+        //daily task
+        Schema::create('core_daily_tasks', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('uuid', 50)->index()->nullable();
+            $table->integer('user_id')->unsigned();
+            $table->string('week', 20);
+            $table->string('site', 20);
+            $table->string('district', 20);
+            $table->integer('ticket')->default();
+            $table->string('type', 20);
+            $table->string('subject', 150);
+            $table->string('raisedby', 20);
+            $table->string('position', 20)->nullable();
+            $table->string('department', 20)->nullable();
+            $table->integer('days')->default(0);
+            $table->boolean('hitmiss')->default(false)->nullable();
+            $table->boolean('status')->default(false)->nullable();
+            $table->boolean('sla')->default(false)->nullable();
+            $table->string('remarks', 150)->nullable();
+            $table->boolean('publish')->default(false);
+            $table->timestamps();
+        });
+
+        //soption
+        Schema::create('core_options', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('uuid', 50)->index()->nullable();
+            $table->string('soptiontype', 20);
+            $table->string('name', 20);
+            $table->boolean('status')->default(true);
+            $table->timestamps();
         });
 
         // Run the Core database Seeder
@@ -281,7 +316,9 @@ class CoreTables extends Migration
         Schema::dropIfExists('core_client');
         Schema::dropIfExists('core_app');
         Schema::dropIfExists('core_passwordreset');
-        // Schema::dropIfExists('personal_access_tokens');
+        Schema::dropIfExists('personal_access_tokens');
+        Schema::dropIfExists('core_daily_tasks');
+        Schema::dropIfExists('core_options');
         Schema::dropIfExists('InnoDB');
     }
 }
