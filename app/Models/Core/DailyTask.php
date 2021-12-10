@@ -8,7 +8,7 @@ use App\Models\MainModel;
 
 class DailyTask extends MainModel
 {
-    protected $table = 'daily_tasks';
+    protected $table = 'core_daily_tasks';
     protected $fillable = [
         'user_id', 'week', 'site', 'district', 'ticket', 'type', 'subject', 'raisedby', 'position', 'department', 'days', 'hitmiss', 'status', 'sla', 'remarks', 'publish'
     ];

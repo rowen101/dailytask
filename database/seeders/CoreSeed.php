@@ -10,6 +10,7 @@ use Database\Seeders\core\CoreRolePermissionSeeder;
 use Database\Seeders\core\CoreRoleSeeder;
 use Database\Seeders\core\CoreSettingSeeder;
 use Database\Seeders\core\CoreUserSeeder;
+
 use Illuminate\Database\Seeder;
 
 class CoreSeed extends Seeder
@@ -29,7 +30,8 @@ class CoreSeed extends Seeder
             CoreRoleSeeder::class,
             CoreRolePermissionSeeder::class,
             CoreUserSeeder::class,
-            CoreSettingSeeder::class
+            CoreSettingSeeder::class,
+
         ]);
     }
 }

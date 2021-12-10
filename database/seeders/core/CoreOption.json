@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "uuid": null,
+        "soptiontype": "ticket",
+        "name": "OSTICKET",
+        "status": 1,
+        "updated_at": "2019-10-26 17:04:56"
+    },
+     {
+        "id": 2,
+        "uuid": null,
+        "soptiontype": "ticket",
+        "name": "VIBER",
+        "status": 1,
+        "updated_at": "2019-10-26 17:04:56"
+    },
+     {
+        "id": 3,
+        "uuid": null,
+        "soptiontype": "ticket",
+        "name": "TEXT",
+        "status": 1,
+        "updated_at": "2019-10-26 17:04:56"
+    },
+     {
+        "id": 4,
+        "uuid": null,
+        "soptiontype": "ticket",
+        "name": "CALL",
+        "status": 1,
+        "updated_at": "2019-10-26 17:04:56"
+    },
+      {
+        "id": 5,
+        "uuid": null,
+        "soptiontype": "ticket",
+        "name": "VERBAL",
+        "status": 1,
+        "updated_at": "2019-10-26 17:04:56"
+    },
+     {
+        "id": 6,
+        "uuid": null,
+        "soptiontype": "gender",
+        "name": "MALE",
+        "status": 1,
+        "updated_at": "2019-10-26 17:04:56"
+    },
+     {
+        "id": 7,
+        "uuid": null,
+        "soptiontype": "gender",
+        "name": "FEMALE",
+        "status": 1,
+        "updated_at": "2019-10-26 17:04:56"
+    }
+]

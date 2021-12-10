@@ -25,10 +25,10 @@ class DailyTaskController extends Controller
     {
         $id = Auth::id();
         // $db = DailyTask::all()->where('user_id', $id);
-        $data = DB::table("daily_tasks")
-            ->join("options", "options.id", "=", "daily_tasks.type")
-            ->select("daily_tasks.*", "options.name")
-            ->where("daily_tasks.user_id", $id)
+        $data = DB::table("core_daily_tasks")
+            ->join("core_options", "core_options.id", "=", "core_daily_tasks.type")
+            ->select("core_daily_tasks.*", "core_options.name")
+            ->where("core_daily_tasks.user_id", $id)
             ->orderBy("id", 'DESC')->get();
         return response()->json($data, 200);
     }
