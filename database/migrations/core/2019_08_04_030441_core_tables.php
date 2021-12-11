@@ -262,7 +262,7 @@ class CoreTables extends Migration
             $table->string('week', 20);
             $table->string('site', 20);
             $table->string('district', 20);
-            $table->integer('ticket')->default();
+            $table->string('ticket')->default();
             $table->string('type', 20);
             $table->string('subject', 150);
             $table->string('raisedby', 20);

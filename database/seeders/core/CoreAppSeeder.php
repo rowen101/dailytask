@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders\core;
+
 use App\Models\Core\CoreApp;
 use Illuminate\Database\Seeder;
 
@@ -11,10 +12,11 @@ class CoreAppSeeder extends Seeder
      *
      * @return void
      */
-    public function run() {
-        $filePath = database_path().'/seeders/core/CoreApp.json';
+    public function run()
+    {
+        $filePath = database_path() . '/seeders/core/CoreApp.json';
         $str = file_get_contents($filePath);
-        $json = json_decode( preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $str), true );
+        $json = json_decode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $str), true);
         foreach ($json as $value) {
             $rowdata = new CoreApp();
             $rowdata->id = $value["id"];
@@ -28,5 +30,4 @@ class CoreAppSeeder extends Seeder
             $rowdata->save();
         }
     }
-
 }
