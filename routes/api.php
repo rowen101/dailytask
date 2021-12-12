@@ -23,13 +23,7 @@ Route::post("login", [UserController::class, 'login']);
 Route::post('/core/store-option', [App\Http\Controllers\Core\DropDownController::class, 'store']);
 Route::post('/core/dailytask-store', [App\Http\Controllers\Core\DailyTaskController::class, 'store']);
 
-//dailytask
-Route::get('/core/dailytasklist', [App\Http\Controllers\Core\DailyTaskController::class, 'listdailytask']);
-Route::post('/core/dailytask-store', [App\Http\Controllers\Core\DailyTaskController::class, 'store']);
-Route::put('/core/dailytask-update/{id}', [App\Http\Controllers\Core\DailyTaskController::class, 'update']);
-Route::delete('/core/dailytask-delete/{id}', [App\Http\Controllers\Core\DailyTaskController::class, 'destroy']);
-Route::put('/core/ticket-publish/{id}', [App\Http\Controllers\Core\DailyTaskController::class, 'ispublish']);
-Route::get('/core/ticket-type', [App\Http\Controllers\Core\DailyTaskController::class, 'isoptiontype']);
+
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(
@@ -37,6 +31,13 @@ Route::middleware('auth:sanctum')->group(
         Route::delete("logout", [UserController::class, 'logout']);
 
 
+        //dailytask
+        Route::get('/core/dailytasklist/{id}', [App\Http\Controllers\Core\DailyTaskController::class, 'listdailytask']);
+        Route::post('/core/dailytask-store', [App\Http\Controllers\Core\DailyTaskController::class, 'store']);
+        Route::put('/core/dailytask-update/{id}', [App\Http\Controllers\Core\DailyTaskController::class, 'update']);
+        Route::delete('/core/dailytask-delete/{id}', [App\Http\Controllers\Core\DailyTaskController::class, 'destroy']);
+        Route::put('/core/ticket-publish/{id}', [App\Http\Controllers\Core\DailyTaskController::class, 'ispublish']);
+        Route::get('/core/ticket-type', [App\Http\Controllers\Core\DailyTaskController::class, 'isoptiontype']);
         //customer
         Route::get('/wms/customer/customer-list', [App\Http\Controllers\Wms\CustomerController::class, 'index']);
         Route::post('/wms/customer/customer-store', [App\Http\Controllers\Wms\CustomerController::class, 'store']);

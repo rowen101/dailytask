@@ -21,10 +21,10 @@ class DailyTaskController extends Controller
         return view("core.dailytask");
     }
 
-    public function listdailytask()
+    public function listdailytask($id)
     {
-        $id = Auth::id();
-        // $db = DailyTask::all()->where('user_id', $id);
+        //$id = Auth::id();
+        // $data = DailyTask::all()->where('user_id', $id);
         $data = DB::table("core_daily_tasks")
             ->join("core_options", "core_options.id", "=", "core_daily_tasks.type")
             ->select("core_daily_tasks.*", "core_options.name")
