@@ -1,0 +1,7 @@
+POST https://apps.fastlogistics.com.ph/mira/api/Osticket/jbp/?key=p HTTP/1.1
+content-type: application/json
+
+{
+    "p":"900307"
+
+}

@@ -1,16 +1,29 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes React and other helpers. It's a great starting point while
- * building robust, powerful web applications using React + Laravel.
- */
+//require("./bootstrap");
+import Vue from "vue";
+import App from "./app/pages/App";
+import router from "./app/router";
+import store from "./store";
 
-require("./bootstrap");
+import BootstrapVue from "bootstrap-vue";
+import VueRouterBackButton from "vue-router-back-button";
+import "./polyfill";
+import miniToastr from "mini-toastr";
+import Vselect from "vue-select";
+import Notifications from "vue-notification";
+import velocity from "velocity-animate";
+miniToastr.init();
+Vue.use(VueRouterBackButton, { router });
+Vue.use(BootstrapVue);
+Vue.use(Notifications);
 
-/**
- * Next, we will create a fresh React component instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+Vue.component("v-select", Vselect);
 
-
-
+new Vue({
+    el: "#app",
+    router,
+    store,
+    template: "<App/>",
+    components: {
+        App,
+    },
+});

@@ -1,0 +1,18 @@
+post http://127.0.0.1:8000/api/task-store HTTP/1.1
+content-type: application/json
+Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY0NjE3ODA4MCwiZXhwIjoxNjQ2MTgxNjgwLCJuYmYiOjE2NDYxNzgwODAsImp0aSI6InI4dm41QUtydEZIMjlJRUsiLCJzdWIiOjUsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.k1OLskvizj8yq4nLGHWTtFgzNnetl8fN5Kn2wGP63ss"
+
+{
+    "user_id":"1",
+    "site":"growen@live.com",
+    "week":"9",
+    "district" :"District 5",
+    "ticket": "900307",
+    "type": "OSTICKET",
+    "subject": "STORAGE FULL",
+    "raisedby": "DISNEL EVE ADARNE VIOJAN",
+    "position": "OPERATIONS ENGINEER",
+    "department": "OPERATIONS",
+    "agent":"Rowen Gonzales"
+}
+
